@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1280</width>
+    <height>576</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1280</width>
+    <height>576</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1280</width>
+    <height>576</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Лабораторная работа №1</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QGraphicsView" name="graphicsView">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>1000</width>
+      <height>490</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>19</y>
+      <width>241</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Масштабирование</string>
+    </property>
+    <widget class="QPushButton" name="scale_button">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>221</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Масштабировать</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="kx_box">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>20</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>0.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>10000000000000000.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>1.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="ky_box">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>0.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>10000000000000000000000.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>1.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string> kX</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>50</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string> kY</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>33</x>
+       <y>80</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>kZ</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="kz_box">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>80</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>0.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>10000000000000000.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>1.000000000000000</double>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_2">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>190</y>
+      <width>241</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Перенос</string>
+    </property>
+    <widget class="QPushButton" name="move_button">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>221</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Перенести</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>50</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string> dY</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="dy_box">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>-10000000000000000000000.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>10000000000000000000000.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="dz_box">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>80</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>-99999999999999991611392.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>10000000000000000.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>80</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string> dZ</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="dx_box">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>20</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>-10000000000000000.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>10000000000000000.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>33</x>
+       <y>20</y>
+       <width>20</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>dX</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_3">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>360</y>
+      <width>241</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Поворот</string>
+    </property>
+    <widget class="QPushButton" name="turn_button">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>221</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Повернуть</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="phi_x_box">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>20</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>-10000000000000000.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>10000000000000000.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="phi_y_box">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>-10000000000000000000000.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>10000000000000000000000.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="phi_z_box">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>80</y>
+       <width>131</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="minimum">
+      <double>-99999999999999991611392.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>10000000000000000.000000000000000</double>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string> phi X</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>33</x>
+       <y>50</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>phi Y</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_10">
+     <property name="geometry">
+      <rect>
+       <x>33</x>
+       <y>80</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>phi Z</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1280</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="action"/>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action">
+   <property name="text">
+    <string>Загрузить объект</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
