@@ -121,13 +121,13 @@ void MainWindow::on_action_triggered()
 {
     QStringList Files = QFileDialog::getOpenFileNames(
                         this, tr("Открыть файлы"),
-                        "../", "*.csv;");
+                        "..\\lab_01\\shared\\", "*.*;");
 
-    const char *name = Files[0].toStdString().c_str();
+    std::string name = Files[0].toStdString();
     request_t request;
 
     request.option = LOAD;
-    request.file_name = name;
+    request.file_name = name.c_str();
 
     error_t error_code = request_handle(request);
 
