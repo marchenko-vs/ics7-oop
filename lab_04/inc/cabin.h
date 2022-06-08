@@ -12,39 +12,41 @@ class Cabin : public QObject
 
     enum CabinStatus
     {
-        GET,
-        FREE,
-        MOVING
+        STANDING,
+        GOT_TARGET,
+        RIDING
     };
 
 public:
     explicit Cabin(QObject *parent = nullptr);
+
     ~Cabin() = default;
 
 public slots:
-    void CabinMoving();
-    void CabinGetsTarget(ssize_t floor);
-    void CabinStopped(bool is_last, ssize_t new_floor = 1);
-
-signals:
-    void OpenDoorsSignal();
-    void FloorPassed(ssize_t floor, Direction dir);
+    void GotTargetSlot(ssize_t& needed_floor, ssize_t& current_floor);
+    void StoppedSlot(bool is_last, ssize_t current_floor, ssize_t needed_floor = 1);
 
 private:
-    Doors door_;
+    void SaveState(const ssize_t& needed_floor, const ssize_t& current_floor);
 
-    ssize_t current_floor_;
-    ssize_t desired_floor_;
+    QTimer riding_timer_;
 
+    Door doors_;
     Direction direction_;
-
     CabinStatus status_;
 
-    QTimer move_timer_;
+    ssize_t current_floor_;
+    ssize_t needed_floor_;
+
+    bool target_exists_;
+
+private slots:
+    void RidingSlot();
 
 signals:
-    void MovingSignal();
-    void StoppedSignal(bool = true, ssize_t = 1);
+    void FloorPassedSignal(ssize_t floor, Direction direction);
+    void OpenDoorsSignal();
+    void RidingSignal();
 };
 
 #endif // _CABIN_H_

@@ -4,11 +4,10 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication application(argc, argv);
+    QApplication app(argc, argv);
     MainWindow window;
+
     window.show();
 
-    window.setWindowTitle("Elevator");
-
-    return application.exec();
+    return app.exec();
 }

@@ -16,22 +16,24 @@ class Button : public QPushButton
 
 public:
     Button(QWidget *parent = nullptr);
+
     ~Button() = default;
 
-    void SetFloor(const ssize_t &floor);
+    void SetFloor(const ssize_t& floor);
 
 public slots:
-    void Pressed();
-    void Unpressed();
+    void NotPressed();
 
 signals:
-    void FloorPressed(ssize_t floor);
-    void UnpressSignal();
+    void PressedSignal(ssize_t floor);
+    void NotPressedSignal();
 
 private:
     ButtonStatus status_;
-
     ssize_t button_floor_;
+
+private slots:
+    void PressedSlot();
 };
 
 #endif // _BUTTON_H_

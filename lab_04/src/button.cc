@@ -2,42 +2,65 @@
 
 #include "button.h"
 
-Button::Button(QWidget *parrent) : QPushButton(parrent)
+Button::Button(QWidget *parent) : QPushButton(parent)
 {
-    QObject::connect(this, SIGNAL(clicked()), this, SLOT(Pressed()));
-    QObject::connect(this, SIGNAL(UnpressSignal()), this, SLOT(Unpressed()));
+    QObject::connect(this, SIGNAL(clicked()),
+                     this, SLOT(PressedSlot()));
+    QObject::connect(this, SIGNAL(NotPressedSignal()),
+                     this, SLOT(NotPressed()));
 
-    this->status_ = INACTIVE;
-    this->button_floor_ = 1;
+    status_ = INACTIVE;
+    button_floor_ = 1;
+
+    setStyleSheet("border-style: outset;"
+                  "color: black;"
+                  "border-width: 1px;"
+                  "border-radius: 10px;"
+                  "border-color: black;"
+                  "font: bold 14px;"
+                  "padding: 6px;");
 }
 
-void Button::SetFloor(const ssize_t &floor)
+void Button::SetFloor(const ssize_t& floor)
 {
-    this->button_floor_ = floor;
+    button_floor_ = floor;
 }
 
-void Button::Pressed()
+void Button::PressedSlot()
 {
     if (status_ == INACTIVE)
     {
-        this->setFocus();
-        this->setStyleSheet("background-color: purple; color: white");
+        this->setStyleSheet("background-color: yellow;"
+                            "color: black;"
+                            "border-style: outset;"
+                            "border-width: 1px;"
+                            "border-radius: 10px;"
+                            "border-color: black;"
+                            "font: bold 14px;"
+                            "padding: 6px;");
         this->update();
 
-        this->status_ = ACTIVE;
+        status_ = ACTIVE;
         this->setDisabled(true);
-        emit FloorPressed(this->button_floor_);
+        emit PressedSignal(button_floor_);
     }
 }
 
-void Button::Unpressed()
+void Button::NotPressed()
 {
     if (status_ == ACTIVE)
     {
-        this->setStyleSheet("background-color:yellow");
+        this->setStyleSheet("background-color: purple;"
+                            "color: white;"
+                            "border-style: outset;"
+                            "border-width: 1px;"
+                            "border-radius: 10px;"
+                            "border-color: black;"
+                            "font: bold 14px;"
+                            "padding: 6px;");
         this->update();
 
-        this->status_ = INACTIVE;
+        status_ = INACTIVE;
         this->setDisabled(false);
     }
 }

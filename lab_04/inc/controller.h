@@ -9,15 +9,15 @@
 
 #include "button.h"
 
-#define NUMBER_OF_FLOORS 9
-#define DOORS_TIME  500
-#define MOVING_TIME 3000
+#define FLOOR_COUNT 14
+#define DOORS_TIME  900
+#define RIDING_TIME 3000
 
 enum Direction
 {
-    UP = 1,
+    DOWN = -1,
     STOP = 0,
-    DOWN = -1
+    UP = 1
 };
 
 class Controller : public QWidget
@@ -27,35 +27,41 @@ class Controller : public QWidget
     enum ControllerStatus
     {
         FREE,
+        GOT_TARGET,
         BUSY
     };
 
 public:
     explicit Controller(QWidget *parent = nullptr);
+
+    Direction GetDirection() const;
+    void SetDirection(const Direction& direction);
+
     ~Controller() = default;
 
 public slots:
-    void NewTarget(ssize_t floor);
-    void PassedFloor(ssize_t floor, Direction direction_);
-
-signals:
-    void NewTargetSignal(ssize_t floor);
-    void StoppedSignal(bool, ssize_t = 1);
+    void NewTargetSlot(ssize_t floor);
+    void FloorPassedSlot(ssize_t floor, Direction direction);
+    void ControllerStoppedSlot();
 
 private:
-    ControllerStatus status_;
+    bool TargetExists(ssize_t& new_floor);
 
+    ControllerStatus status_;
     Direction direction_;
 
-    int current_floor_;
-    int needed_floor_;
+    ssize_t current_floor_;
+    ssize_t needed_floor_;
 
     std::vector<std::shared_ptr<Button>> buttons_;
     std::vector<bool> visited_floors_;
-
     std::unique_ptr<QVBoxLayout> layout_;
 
-    bool TargetExists(ssize_t &new_floor);
+signals:
+    void ControllerStoppedSignal();
+    void CabinStoppedSignal(bool, ssize_t, ssize_t = 1);
+    void GotTargetSignal(ssize_t& needed_floor, ssize_t& current_floor);
+    void FloorPassedSignal(ssize_t floor, Direction direction);
 };
 
 #endif // _CONTROLLER_H_

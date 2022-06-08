@@ -6,16 +6,16 @@ CONFIG += c++17
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
-INCLUDEPATH += "inc/"
+INCLUDEPATH += inc
 
 SOURCES += \
-    src\main.cc \
-    src\mainwindow.cc \
     src\button.cc \
     src\cabin.cc \
     src\controller.cc \
     src\doors.cc \
-    src\elevator.cc
+    src\elevator.cc \
+    src\main.cc \
+    src\mainwindow.cc
 
 HEADERS += \
     inc\button.h \

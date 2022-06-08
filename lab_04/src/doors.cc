@@ -1,64 +1,71 @@
-#include <QDebug>
-
 #include "doors.h"
 #include "controller.h"
 
-Doors::Doors()
+Door::Door()
 {
-    this->status_ = CLOSED;
+    status_ = CLOSED;
 
-    QObject::connect(&opening_timer_, SIGNAL(timeout()), this, SLOT(Opened()));
-    QObject::connect(&opened_timer_,  SIGNAL(timeout()), this, SLOT(Closing()));
-    QObject::connect(&closing_timer_, SIGNAL(timeout()), this, SLOT(Closed()));
+    QObject::connect(&opening_timer_, SIGNAL(timeout()),
+                     this, SLOT(OpenSlot()));
+    QObject::connect(&open_timer_,  SIGNAL(timeout()),
+                     this, SLOT(ClosingSlot()));
+    QObject::connect(&closing_timer_, SIGNAL(timeout()),
+                     this, SLOT(ClosedSlot()));
 }
 
-void Doors::Opening()
+void Door::OpeningSlot()
 {
     if (status_ == CLOSED || status_ == CLOSING)
     {
         qDebug() << "Doors are opening.";
 
-        if (this->status_ == CLOSED)
+        if (status_ == CLOSED)
         {
-            this->status_ = OPENING;
-            this->opening_timer_.start(DOORS_TIME);
+            status_ = OPENING;
+            opening_timer_.start(DOORS_TIME);
         }
         else
         {
-            this->status_ = OPENING;
+            status_ = OPENING;
             auto timer = closing_timer_.remainingTime();
             closing_timer_.stop();
-            this->opening_timer_.start(DOORS_TIME - timer);
+            opening_timer_.start(DOORS_TIME - timer);
         }
     }
 }
 
-void Doors::Opened()
+void Door::OpenSlot()
 {
     if (status_ == OPENING)
     {
-        this->status_ = OPEN;
-        qDebug() << "Doors have been opened!";
-        this->opened_timer_.start(DOORS_TIME);
+        status_ = OPEN;
+
+        qDebug() << "Doors are open!";
+
+        open_timer_.start(DOORS_TIME);
     }
 }
 
-void Doors::Closing()
+void Door::ClosingSlot()
 {
     if (status_ == OPEN)
     {
-        this->status_ = CLOSING;
+        status_ = CLOSING;
+
         qDebug() << "Doors are closing.";
-        this->closing_timer_.start(DOORS_TIME);
+
+        closing_timer_.start(DOORS_TIME);
     }
 }
 
-void Doors::Closed()
+void Door::ClosedSlot()
 {
     if (status_ == CLOSING)
     {
-        this->status_ = CLOSED;
-        qDebug() << "Doors have been closed!";
+        status_ = CLOSED;
+
+        qDebug() << "Doors are closed!";
+
         emit ClosedSignal();
     }
 }

@@ -2,66 +2,70 @@
 
 #include "cabin.h"
 
-Cabin::Cabin(QObject *parent)
+Cabin::Cabin(QObject *parent) : QObject(parent)
 {
-    this->status_ = FREE;
-    this->current_floor_ = 1;
-    this->desired_floor_ = 1;
-    this->direction_ = STOP;
+    status_ = STANDING;
+    target_exists_ = false;
 
-    QObject::connect(&move_timer_, SIGNAL(timeout()), this, SLOT(CabinMoving()));
-
-    QObject::connect(this, SIGNAL(MovingSignal()), this, SLOT(CabinMoving()));
-    QObject::connect(this, SIGNAL(StoppedSignal(bool, ssize_t)), this, SLOT(CabinStopped(bool, ssize_t)));
-    QObject::connect(this, SIGNAL(OpenDoorsSignal()), &door_, SLOT(Opening()));
-    QObject::connect(&door_, SIGNAL(ClosedSignal()), this, SLOT(CabinMoving()));
+    QObject::connect(this, SIGNAL(RidingSignal()),
+                     this, SLOT(RidingSlot()));
+    QObject::connect(&riding_timer_, SIGNAL(timeout()),
+                     this, SLOT(RidingSlot()));
+    QObject::connect(this, SIGNAL(OpenDoorsSignal()),
+                     &doors_, SLOT(OpeningSlot()));
+    QObject::connect(&doors_, SIGNAL(ClosedSignal()),
+                     this, SLOT(RidingSlot()));
 }
 
-void Cabin::CabinMoving()
+void Cabin::RidingSlot()
 {
-    if (status_ == MOVING || status_ == GET)
+    if (target_exists_)
     {
-        this->status_ = MOVING;
-        move_timer_.start(MOVING_TIME);
+        if (status_ == GOT_TARGET || status_ == STANDING)
+            status_ = RIDING;
+        else
+            current_floor_ += direction_;
 
-        qDebug() << "Elevator is riding. Current floor is: " << this->current_floor_;
-        emit FloorPassed(current_floor_, this->direction_);
+        qDebug() << "The elevator is on floor " << current_floor_;
 
-        if (current_floor_ != desired_floor_)
-        {
-            this->direction_ = current_floor_ > desired_floor_ ? DOWN : UP;
-            this->current_floor_ = current_floor_ > desired_floor_ ? current_floor_ - 1 : current_floor_ + 1;
-        }
+        if (current_floor_ != needed_floor_)
+            riding_timer_.start(RIDING_TIME);
+
+        emit FloorPassedSignal(current_floor_, direction_);
     }
 }
 
-void Cabin::CabinStopped(bool is_last, ssize_t new_floor)
+void Cabin::GotTargetSlot(ssize_t& needed_floor, ssize_t& current_floor)
 {
-    if (is_last)
+    if (status_ == STANDING)
     {
-        this->status_ = FREE;
-    } else
-    {
-        this->status_ = GET;
-        this->desired_floor_ = new_floor;
+        status_ = GOT_TARGET;
+        target_exists_ = true;
+        SaveState(needed_floor, current_floor);
+        emit RidingSignal();
     }
-
-    this->move_timer_.stop();
-    emit OpenDoorsSignal();
 }
 
-void Cabin::CabinGetsTarget(ssize_t floor)
+void Cabin::StoppedSlot(bool is_last, ssize_t current_floor, ssize_t needed_floor)
 {
-    this->status_ = GET;
-    this->desired_floor_ = floor;
+    if (status_ == RIDING || status_ == STANDING)
+    {
+        status_ = STANDING;
+        SaveState(needed_floor, current_floor);
 
-    if (this->current_floor_ == this->desired_floor_)
-    {
-        emit FloorPassed(current_floor_, this->direction_);
+        qDebug() << "The elevator stopped on floor" << current_floor_;
+
+        if (is_last)
+            target_exists_ = false;
+
+        riding_timer_.stop();
+        emit OpenDoorsSignal();
     }
-    else
-    {
-        this->direction_ = desired_floor_ > current_floor_ ? UP : DOWN;
-        emit MovingSignal();
-    }
+}
+
+void Cabin::SaveState(const ssize_t& needed_floor, const ssize_t& current_floor)
+{
+    needed_floor_ = needed_floor;
+    current_floor_ = current_floor;
+    direction_ = current_floor_ > needed_floor_ ? DOWN : UP;
 }
