@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QVBoxLayout>
+
 #include <memory>
 
 #include "elevator.h"
@@ -27,4 +28,5 @@ private:
 
     Elevator elevator_;
 };
+
 #endif // _MAINWINDOW_H_

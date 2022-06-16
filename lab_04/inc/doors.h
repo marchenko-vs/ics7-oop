@@ -5,9 +5,9 @@
 #include <QDebug>
 #include <QTimer>
 
-class Door : public QObject
+class Doors : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
 
 private:
     enum DoorStatus
@@ -18,28 +18,27 @@ private:
         CLOSED
     };
 
-public:
-    Door();
-
-    ~Door() = default;
-
-public slots:
-    void OpeningSlot();
-
-private:
     DoorStatus status_;
 
     QTimer opening_timer_;
     QTimer closing_timer_;
     QTimer open_timer_;
 
+public:
+    Doors();
+
+    ~Doors() = default;
+
+signals:
+    void ClosedSignal();
+
 private slots:
     void OpenSlot();
     void ClosingSlot();
     void ClosedSlot();
 
-signals:
-    void ClosedSignal();
+public slots:
+    void OpeningSlot();
 };
 
 #endif // _DOORS_H_

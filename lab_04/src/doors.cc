@@ -1,19 +1,21 @@
 #include "doors.h"
 #include "controller.h"
 
-Door::Door()
+Doors::Doors()
 {
     status_ = CLOSED;
 
     QObject::connect(&opening_timer_, SIGNAL(timeout()),
-                     this, SLOT(OpenSlot()));
+                     this, SLOT(OpenSlot())); // here
+
     QObject::connect(&open_timer_,  SIGNAL(timeout()),
-                     this, SLOT(ClosingSlot()));
+                     this, SLOT(ClosingSlot())); // here
+
     QObject::connect(&closing_timer_, SIGNAL(timeout()),
-                     this, SLOT(ClosedSlot()));
+                     this, SLOT(ClosedSlot())); // here
 }
 
-void Door::OpeningSlot()
+void Doors::OpeningSlot()
 {
     if (status_ == CLOSED || status_ == CLOSING)
     {
@@ -22,19 +24,19 @@ void Door::OpeningSlot()
         if (status_ == CLOSED)
         {
             status_ = OPENING;
-            opening_timer_.start(DOORS_TIME);
+            opening_timer_.start(DOORS_WORKING_TIME);
         }
         else
         {
             status_ = OPENING;
             auto timer = closing_timer_.remainingTime();
             closing_timer_.stop();
-            opening_timer_.start(DOORS_TIME - timer);
+            opening_timer_.start(DOORS_WORKING_TIME - timer);
         }
     }
 }
 
-void Door::OpenSlot()
+void Doors::OpenSlot()
 {
     if (status_ == OPENING)
     {
@@ -42,11 +44,11 @@ void Door::OpenSlot()
 
         qDebug() << "Doors are open!";
 
-        open_timer_.start(DOORS_TIME);
+        open_timer_.start(DOORS_WORKING_TIME);
     }
 }
 
-void Door::ClosingSlot()
+void Doors::ClosingSlot()
 {
     if (status_ == OPEN)
     {
@@ -54,11 +56,11 @@ void Door::ClosingSlot()
 
         qDebug() << "Doors are closing.";
 
-        closing_timer_.start(DOORS_TIME);
+        closing_timer_.start(DOORS_WORKING_TIME);
     }
 }
 
-void Door::ClosedSlot()
+void Doors::ClosedSlot()
 {
     if (status_ == CLOSING)
     {
@@ -66,6 +68,6 @@ void Door::ClosedSlot()
 
         qDebug() << "Doors are closed!";
 
-        emit ClosedSignal();
+        emit ClosedSignal(); // in cabin module
     }
 }

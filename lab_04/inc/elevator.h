@@ -8,17 +8,18 @@
 
 class Elevator : public QObject
 {
-    Q_OBJECT;
+    Q_OBJECT
+
+private:
+    Controller controller_;
+    Cabin cabin_;
+
 public:
     explicit Elevator(QObject *parent = nullptr);
 
     ~Elevator() = default;
 
     QWidget *widget();
-
-private:
-    Controller controller_;
-    Cabin cabin_;
 };
 
 #endif // _ELEVATOR_H_

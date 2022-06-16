@@ -6,34 +6,34 @@
 
 class Button : public QPushButton
 {
-    Q_OBJECT;
+    Q_OBJECT
 
+private:
     enum ButtonStatus
     {
         ACTIVE,
         INACTIVE
     };
 
+    ButtonStatus status_;
+    ssize_t button_floor_;
+
 public:
     Button(QWidget *parent = nullptr);
 
-    ~Button() = default;
-
     void SetFloor(const ssize_t& floor);
 
-public slots:
-    void NotPressed();
+    ~Button() = default;
 
 signals:
     void PressedSignal(ssize_t floor);
     void NotPressedSignal();
 
-private:
-    ButtonStatus status_;
-    ssize_t button_floor_;
-
 private slots:
     void PressedSlot();
+
+public slots:
+    void NotPressedSlot();
 };
 
 #endif // _BUTTON_H_

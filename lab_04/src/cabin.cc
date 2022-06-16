@@ -7,14 +7,17 @@ Cabin::Cabin(QObject *parent) : QObject(parent)
     status_ = STANDING;
     target_exists_ = false;
 
-    QObject::connect(this, SIGNAL(RidingSignal()),
-                     this, SLOT(RidingSlot()));
+    QObject::connect(this, SIGNAL(RidingSignal()), // here
+                     this, SLOT(RidingSlot())); // here
+
     QObject::connect(&riding_timer_, SIGNAL(timeout()),
-                     this, SLOT(RidingSlot()));
-    QObject::connect(this, SIGNAL(OpenDoorsSignal()),
-                     &doors_, SLOT(OpeningSlot()));
-    QObject::connect(&doors_, SIGNAL(ClosedSignal()),
-                     this, SLOT(RidingSlot()));
+                     this, SLOT(RidingSlot())); // here
+
+    QObject::connect(this, SIGNAL(OpenDoorsSignal()), // here
+                     &doors_, SLOT(OpeningSlot())); // implemented in doors module
+
+    QObject::connect(&doors_, SIGNAL(ClosedSignal()), // defined in doors module
+                     this, SLOT(RidingSlot())); // here
 }
 
 void Cabin::RidingSlot()
@@ -29,9 +32,9 @@ void Cabin::RidingSlot()
         qDebug() << "The elevator is on floor " << current_floor_;
 
         if (current_floor_ != needed_floor_)
-            riding_timer_.start(RIDING_TIME);
+            riding_timer_.start(ELEVATOR_RIDING_TIME);
 
-        emit FloorPassedSignal(current_floor_, direction_);
+        emit FloorPassedSignal(current_floor_, direction_); // in controller module
     }
 }
 
@@ -42,7 +45,8 @@ void Cabin::GotTargetSlot(ssize_t& needed_floor, ssize_t& current_floor)
         status_ = GOT_TARGET;
         target_exists_ = true;
         SaveState(needed_floor, current_floor);
-        emit RidingSignal();
+
+        emit RidingSignal(); // here
     }
 }
 
@@ -59,7 +63,8 @@ void Cabin::StoppedSlot(bool is_last, ssize_t current_floor, ssize_t needed_floo
             target_exists_ = false;
 
         riding_timer_.stop();
-        emit OpenDoorsSignal();
+
+        emit OpenDoorsSignal(); // here
     }
 }
 

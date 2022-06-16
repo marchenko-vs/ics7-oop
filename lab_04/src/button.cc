@@ -4,10 +4,11 @@
 
 Button::Button(QWidget *parent) : QPushButton(parent)
 {
-    QObject::connect(this, SIGNAL(clicked()),
-                     this, SLOT(PressedSlot()));
-    QObject::connect(this, SIGNAL(NotPressedSignal()),
-                     this, SLOT(NotPressed()));
+    QObject::connect(this, SIGNAL(clicked()), // Qt signal (default)
+                     this, SLOT(PressedSlot())); // here
+
+    QObject::connect(this, SIGNAL(NotPressedSignal()), // here
+                     this, SLOT(NotPressedSlot())); // here
 
     status_ = INACTIVE;
     button_floor_ = 1;
@@ -42,16 +43,17 @@ void Button::PressedSlot()
 
         status_ = ACTIVE;
         this->setDisabled(true);
-        emit PressedSignal(button_floor_);
+
+        emit PressedSignal(button_floor_); // in controller for every button
     }
 }
 
-void Button::NotPressed()
+void Button::NotPressedSlot()
 {
     if (status_ == ACTIVE)
     {
-        this->setStyleSheet("background-color: purple;"
-                            "color: white;"
+        this->setStyleSheet("background-color: skyblue;"
+                            "color: black;"
                             "border-style: outset;"
                             "border-width: 1px;"
                             "border-radius: 10px;"
