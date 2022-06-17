@@ -1,4 +1,4 @@
 *.exe
 *.o
-build-main-Desktop_Qt_MinGW_w64_64bit_MSYS2-Debug/*
+build*
 
